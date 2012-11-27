@@ -1,0 +1,14 @@
+{
+  "author": "Shotokan <shotokanzh+nodejs@gmail.com>",
+  "name": "MITM Catcher",
+  "description": "Intercepts MITM and notify user via browser.",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ShotokanZH/MITMCatcher.git"
+  },
+  "dependencies": {
+    "express": "3.0.0",
+    "jade": "*"
+  }
+}

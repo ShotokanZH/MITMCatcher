@@ -1,0 +1,68 @@
+extends layout
+
+block content
+  h1= title
+  input(id='lastrcv', style='display:none', value=''))
+  center
+    input(id='notif', style='display:none', value='Notify me', type='submit', onclick='return false;'))
+  table(id='tableid')
+  script
+    var showed = {};
+    if(window.webkitNotifications){
+    if(window.webkitNotifications.checkPermission() === 0) { // 0 is PERMISSION_ALLOWED
+    console.log("Notifications: OK");
+    }
+    else{
+    console.log("Notifications: FALSE");
+    document.getElementById('notif').style.display='block';
+    $("#notif").click( function(){
+    window.webkitNotifications.requestPermission();
+    document.getElementById('notif').style.display='none';
+    return false;
+    });
+    }
+    }
+    function createtable(){
+      $.get("scan", function(a) {
+      var hid_in = document.getElementById('lastrcv')
+      , table = document.getElementById('tableid');
+      var obj = $.parseJSON(a);
+      if(!obj.error){
+      if(obj.ip_mac!=undefined){
+      var ip_mac = {};
+      $.each(obj.ip_mac, function(i,v){
+      ip_mac[i] = v;
+      //console.log("o:"+i+": "+v);
+      })
+      if(hid_in.value != a){
+      table.innerHTML = "";
+      $.each(ip_mac, function(i,v){
+      table.innerHTML+="<tr id='"+i+"'><td>"+i+"</td><td>"+v+"</td><td id='"+i+"new'></td></tr>";
+      });
+      hid_in.value = a;
+      }
+      }
+      if(obj.different!=undefined){
+      var x=0;
+      $.each(obj.different, function(i,v){
+      x++;
+      document.getElementById(i+"new").innerHTML=v;
+      document.getElementById(i).style.color='red';
+      if(showed[i]==undefined&&window.webkitNotifications){
+      if(window.webkitNotifications.checkPermission() === 0) { // 0 is PERMISSION_ALLOWED
+      window.webkitNotifications.createNotification('favicon.ico', 'POSSIBLE MITM!', i+": "+v).show();
+      showed[i]=1;
+      }
+      }
+      else
+      console.log('No notifications..');
+      console.log("d:"+i+": "+v);
+      });
+      if(!x)
+      showed = {};
+      }
+      }
+      });
+      setTimeout("createtable()",500);
+      }
+    createtable();
