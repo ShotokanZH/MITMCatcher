@@ -11,4 +11,7 @@ OR
 OR
 
 - Run `./run.sh` if under linux
+
+THEN
+
 - Go to [http://localhost:3000](http://localhost:3000) in your browser
