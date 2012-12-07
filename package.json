@@ -1,6 +1,6 @@
 {
   "author": "Shotokan <shotokanzh+nodejs@gmail.com>",
-  "name": "MITM Catcher",
+  "name": "MITMCatcher",
   "description": "Intercepts MITM and notify user via browser.",
   "version": "1.0.0",
   "repository": {
